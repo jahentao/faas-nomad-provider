@@ -1,4 +1,4 @@
-
+# refer https://prometheus.io/docs/alerting/configuration/
 global:
   # The smarthost and SMTP sender used for mail notifications.
   smtp_smarthost: 'localhost:25'
@@ -8,13 +8,14 @@ global:
   # The auth token for Hipchat.
   hipchat_auth_token: '1234556789'
   # Alternative host for Hipchat.
-  hipchat_url: 'https://hipchat.foobar.org/'
+  hipchat_api_url: 'https://hipchat.foobar.org/'
 
 # The directory from which notification templates are read.
 templates:
 - '/etc/alertmanager/template/*.tmpl'
 
 # The root route on which each incoming alert enters.
+# https://prometheus.io/webtools/alerting/routing-tree-editor/ helps a lot
 route:
   # The labels by which incoming alerts are grouped together. For example,
   # multiple alerts coming in for cluster=A and alertname=LatencyHigh would
