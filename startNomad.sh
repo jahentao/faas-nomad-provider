@@ -7,6 +7,8 @@ else
   IP_ADDRESS=$(ip route get 1 | awk '{print $NF;exit}')
 fi
 
+IP_ADDRESS=192.168.237.134
+
 # Set IP Address in config
 sed "s/##HOST_IP##/${IP_ADDRESS}/g" < nomad_config.hcl.tmpl > nomad.hcl
 sed "s/##HOST_IP##/${IP_ADDRESS}/g" < consul_config.hcl.tmpl > consul.hcl
@@ -28,7 +30,7 @@ nohup nomad agent --config=nomad.hcl >~/log/nomad.log 2>&1 &
 # Set Nomad environment variable
 export NOMAD_ADDR=http://${IP_ADDRESS}:4646
 export CONSUL_HTTP_ADDR=http://${IP_ADDRESS}:8500
-export FAAS_GATEWAY=http://${IP_ADDRESS}:8080/
+export FAAS_GATEWAY=http://${IP_ADDRESS}:8080
 
 n=0
 until [ $n -ge 10 ]

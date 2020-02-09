@@ -26,8 +26,17 @@ job "fabio" {
         registry.consul.addr = "${NOMAD_IP_http}:8500"
       }
 
+      template {
+        env = true
+        destination   = "secrets/fabio.env"
+
+        data = <<EOH
+registry.consul.addr="{{ env "NOMAD_IP_http" }}:8500"
+EOH
+      }
+
       config {
-        image = "magiconair/fabio:1.5.3-go1.9.2"
+        image = "magiconair/fabio:1.5.13-go1.13.4"
 
         port_map {
           http = 9999

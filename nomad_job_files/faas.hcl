@@ -4,6 +4,11 @@ job "faas-nomadd" {
   type = "system"
 
   constraint {
+    attribute = "${attr.kernel.name}"
+    value     = "linux"
+  }
+
+  constraint {
     attribute = "${attr.cpu.arch}"
     operator  = "="
     value     = "amd64"
@@ -124,10 +129,10 @@ EOH
       driver = "docker"
 
       config {
-        image = "prom/statsd-exporter:v0.4.0"
+        image = "prom/statsd-exporter:v0.14.1"
 
         args = [
-          "-log.level=debug",
+          "--log.level=debug",
         ]
       }
 
@@ -178,7 +183,7 @@ EOH
       driver = "docker"
       
       config {
-        image = "nats-streaming:0.11.2-linux"
+        image = "nats-streaming:0.16.2"
 
         args = [
           "-store", "file", "-dir", "/tmp/nats",
