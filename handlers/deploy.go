@@ -37,6 +37,9 @@ var (
 	updateMinHealthyTime  = 5 * time.Second
 	updateHealthyDeadline = 20 * time.Second
 	updateStagger         = 5 * time.Second
+
+	// default values
+	defaultMBit = 1
 )
 
 // MakeDeploy creates a handler for deploying functions
@@ -208,6 +211,7 @@ func createResources(r requests.CreateFunctionRequest) *api.Resources {
 		Networks: []*api.NetworkResource{
 			&api.NetworkResource{
 				DynamicPorts: []api.Port{api.Port{Label: "http"}},
+				MBits:        &defaultMBit,
 			},
 		},
 		MemoryMB: &taskMemory,
