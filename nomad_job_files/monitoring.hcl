@@ -27,17 +27,17 @@ job "faas-monitoring" {
     task "alertmanager" {
       driver = "docker"
 
-      artifact {
-        source      = "https://raw.githubusercontent.com/hashicorp/faas-nomad/master/nomad_job_files/templates/alertmanager.yml"
-        destination = "local/alertmanager.yml.tpl"
-        mode        = "file"
-      }
-
       #artifact {
-      #  source      = "https://raw.githubusercontent.com/jahentao/faas-nomad-provider/master/nomad_job_files/templates/alertmanager.yml"
+      #  source      = "https://raw.githubusercontent.com/hashicorp/faas-nomad/master/nomad_job_files/templates/alertmanager.yml"
       #  destination = "local/alertmanager.yml.tpl"
-      #    mode        = "file"
+      #  mode        = "file"
       #}
+
+      artifact {
+        source      = "https://raw.githubusercontent.com/jahentao/faas-nomad-provider/master/nomad_job_files/templates/alertmanager.yml"
+        destination = "local/alertmanager.yml.tpl"
+          mode        = "file"
+      }
 
       template {
         source        = "local/alertmanager.yml.tpl"
@@ -47,8 +47,8 @@ job "faas-monitoring" {
       }
 
       config {
-        image = "prom/alertmanager:v0.9.1"
-        #image = "prom/alertmanager:v0.20.0"
+        #image = "prom/alertmanager:v0.9.1"
+        image = "prom/alertmanager:v0.20.0"
 
         port_map {
           http = 9093
@@ -56,15 +56,15 @@ job "faas-monitoring" {
 
         dns_servers = ["${NOMAD_IP_http}", "8.8.8.8", "8.8.8.4"]
 
-        args = [
-          "-config.file=/etc/alertmanager/alertmanager.yml",
-          "-storage.path=/alertmanager",
-        ]
-
         #args = [
-        #  "--config.file=/etc/alertmanager/alertmanager.yml",
-        #  "--storage.path=/alertmanager",
+        #  "-config.file=/etc/alertmanager/alertmanager.yml",
+        #  "-storage.path=/alertmanager",
         #]
+
+        args = [
+          "--config.file=/etc/alertmanager/alertmanager.yml",
+          "--storage.path=/alertmanager",
+        ]
 
         volumes = [
           "etc/alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml",
