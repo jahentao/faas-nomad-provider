@@ -72,6 +72,9 @@ func (pc *HTTPProxyClient) CallAndReturnResponse(address string, body []byte, he
 	response, err := pc.proxyClient.Do(request)
 	if err != nil {
 		log.Println(err.Error())
+		if response == nil {
+			return nil, nil, 503, err
+		}
 		return nil, nil, response.StatusCode, err
 	}
 
