@@ -73,6 +73,7 @@ func (p *Proxy) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	}
 
 	body, headers, status, err := p.callDownstreamFunction(service, urls, r)
+	//body, headers, status, err := p.callDownstreamFunctionWithServiceName(service, urls, r)
 
 	if err != nil {
 		http.Error(rw, err.Error(), http.StatusInternalServerError)
@@ -107,6 +108,24 @@ func (p *Proxy) callDownstreamFunction(service string, urls []string, r *http.Re
 
 		return nil
 	})
+
+	return respBody, respHeaders, respStatus, err
+}
+
+// 不行,没有端口号
+func (p *Proxy) callDownstreamFunctionWithServiceName(service string, urls []string, r *http.Request) ([]byte, http.Header, int, error) {
+	reqBody, _ := ioutil.ReadAll(r.Body)
+	reqHeaders := r.Header
+	defer r.Body.Close()
+
+	var respBody []byte
+	var respHeaders http.Header
+	var respStatus int
+	var err error
+
+	port := 10000 //?
+	endpoint := "http://"+service+"service.consul:"+string(port)
+	respBody, respHeaders, respStatus, err = p.client.CallAndReturnResponse(endpoint, reqBody, reqHeaders)
 
 	return respBody, respHeaders, respStatus, err
 }

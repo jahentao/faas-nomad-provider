@@ -3,6 +3,7 @@ package consul
 import (
 	"github.com/hashicorp/consul-template/dependency"
 	"github.com/stretchr/testify/mock"
+	"log"
 )
 
 // MockWatcher implements the Watcher interface and is used to mock out consul template
@@ -27,6 +28,7 @@ func (m *MockWatcher) Remove(d dependency.Dependency) bool {
 
 // IterateDataCh iterates over the watchers data channel and calls a function
 func (m *MockWatcher) IterateDataCh(f iterateFunc) {
+	log.Print("[Note]: service addresses in Consul changes")
 	args := m.Mock.Called(f)
 	dep := args.Get(0).(dependency.Dependency)
 
